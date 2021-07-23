@@ -19,9 +19,7 @@ jobs:
         go-version: 1.16
 
     - name: Build
-      run: 
-      - go build -v .
-      - tar -czvf vendir-generator-linux.tar.gz ./vendir-generator
+      run: go build -v . && tar -czvf vendir-generator-linux.tar.gz ./vendir-generator
 
     - name: release
       uses: actions/create-release@v1
