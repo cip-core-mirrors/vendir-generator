@@ -132,7 +132,7 @@ func vendirToTemplate(allDirectory []VendirDirectory) error {
 		return errors.New("Failed to load result template")
 	}
 
-	f, errCreateResultFile := os.Create("../vendir.yml")
+	f, errCreateResultFile := os.Create("./vendir.yml")
 
 	if errCreateResultFile != nil {
 		return errors.New("Failed to create result file")
