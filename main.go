@@ -20,7 +20,7 @@ type CipConfig struct {
 	Components []struct {
 		BaseDestinationPath string `yaml:"baseDestinationPath"`
 		Source              []struct {
-			SourcePath string
+			SourcePath string `yaml:"sourcePath"`
 			Modules    []struct {
 				SourceName      string `yaml:"sourceName"`
 				DestinationName string `yaml:"destinationName"`

@@ -5,8 +5,8 @@ kind: Config
 directories:
 {{ range . }}
   - path: {{ .Path }}
-    {{ range .Content }}
     contents:
+    {{ range .Content }}
       - path: {{ .Path }}
         git:
           url: {{ .Git.Url }}
