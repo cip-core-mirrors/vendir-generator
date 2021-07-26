@@ -25,7 +25,10 @@ type CipConfig struct {
 				SourceName      string `yaml:"sourceName"`
 				DestinationName string `yaml:"destinationName"`
 			}
-			GitConfig struct {
+			DirConfig *struct {
+				Path string
+			} `yaml:"dirConfig"`
+			GitConfig *struct {
 				Url string
 				Ref string
 			} `yaml:"gitConfig"`
@@ -41,13 +44,18 @@ type VendirDirectory struct {
 type VendirDirectoryContent struct {
 	Path         string
 	NewRootPath  string
-	Git          VendirDirectoryContentGit
+	Git          *VendirDirectoryContentGit
+	Dir          *VendirDirectoryContentDir
 	IncludePaths string
 }
 
 type VendirDirectoryContentGit struct {
 	Url string
 	Ref string
+}
+
+type VendirDirectoryContentDir struct {
+	Path string
 }
 
 func main() {
@@ -101,9 +109,20 @@ func configToVendirDirectories(config CipConfig) (error, []VendirDirectory) {
 
 		for _, source := range component.Source {
 
-			gitConfig := VendirDirectoryContentGit{
-				Url: source.GitConfig.Url,
-				Ref: source.GitConfig.Ref,
+			var gitConfig *VendirDirectoryContentGit = nil
+			var dirConfig *VendirDirectoryContentDir = nil
+
+			if source.GitConfig != nil {
+				gitConfig = &VendirDirectoryContentGit{
+					Url: source.GitConfig.Url,
+					Ref: source.GitConfig.Ref,
+				}
+			}
+
+			if source.DirConfig != nil {
+				dirConfig = &VendirDirectoryContentDir{
+					Path: source.DirConfig.Path,
+				}
 			}
 
 			for _, module := range source.Modules {
@@ -114,6 +133,7 @@ func configToVendirDirectories(config CipConfig) (error, []VendirDirectory) {
 				content.IncludePaths = filepath.Join(source.SourcePath, module.SourceName, "**", "*")
 				content.Path = module.DestinationName
 				content.Git = gitConfig
+				content.Dir = dirConfig
 
 				vendirDirectory.Content = append(vendirDirectory.Content, content)
 			}
@@ -129,6 +149,7 @@ func vendirToTemplate(allDirectory []VendirDirectory) error {
 	template, errLoad := template.New("main").Parse(vendirTemplate)
 
 	if errLoad != nil {
+		print(errLoad.Error())
 		return errors.New("Failed to load result template")
 	}
 

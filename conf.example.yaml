@@ -1,6 +1,6 @@
 components:
   - baseDestinationPath: components/terraform
-    source: 
+    sourcePath: 
     - path: modules
       gitConfig:
         url: https://github.com/mathieusr/terraform-aws-components
@@ -8,19 +8,17 @@ components:
       modules:
         - sourceName: dns-delegated
           destinationName: dns-delegated
-  - destinationPath: components/helmfile
+  - baseDestinationPath: components/helmfile
     source: 
-    - path: releases
+    - sourcePath: releases
       gitConfig:
         url: https://github.com/cloudposse/helmfiles
         ref:  0.125.1
       modules:
         - sourceName: external-dns
           destinationName: external-dns
-    - path: helmfile
-      gitConfig:
-        url: https://github.com/cip-core-mirrors/cip-infra
-        ref:  origin/master
+    - dirConfig:
+        path: ./helmfile
       modules:
         - sourceName: calico
           destinationName: calico

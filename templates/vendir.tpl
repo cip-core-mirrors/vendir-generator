@@ -8,9 +8,15 @@ directories:
     contents:
     {{ range .Content }}
       - path: {{ .Path }}
+      {{ if .Git }}
         git:
           url: {{ .Git.Url }}
           ref: {{ .Git.Ref }}
+      {{ end }}
+      {{ if .Dir }}
+        directory:
+          path: {{ .Dir.Path }}
+      {{ end }}
         newRootPath: {{ .NewRootPath }}
         includePaths:
           - {{ .IncludePaths }}
