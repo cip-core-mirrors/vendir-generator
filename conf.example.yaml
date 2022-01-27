@@ -3,7 +3,7 @@ components:
     sourcePath: 
     - path: modules
       gitConfig:
-        url: https://github.com/mathieusr/terraform-aws-components
+        url: https://github.com/cip-core-mirrors/terraform-aws-components
         ref: origin/cip
       modules:
         - sourceName: dns-delegated
